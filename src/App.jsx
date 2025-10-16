@@ -77,22 +77,50 @@ function App() {
 
   return (
     <div className="dashboard">
-      <header className="dashboard-header">
-        <div className="header-content">
-          <div className="logo">
-            <span className="logo-icon">🐕</span>
-            <h1>DogeWatch</h1>
+        <header className="dashboard-header">
+          <div className="header-content">
+            <div className="logo">
+              <span className="logo-icon">🐕</span>
+              <div className="price-display">
+                {priceData ? (
+                  <div className="header-price">
+                    <span className="header-price-value">{formatPrice(priceData.price)}</span>
+                    <span className={`header-price-change ${priceData.priceChangePercent >= 0 ? 'positive' : 'negative'}`}>
+                      {formatPercent(priceData.priceChangePercent)}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="header-loading">
+                    <div className="mini-spinner"></div>
+                    <span>Loading...</span>
+                  </div>
+                )}
+              </div>
+            </div>
+            {priceData && (
+              <div className="market-stats">
+                <div className="stat-item">
+                  <span className="stat-label">24h High:</span>
+                  <span className="stat-value">{formatPrice(priceData.highPrice)}</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-label">24h Low:</span>
+                  <span className="stat-value">{formatPrice(priceData.lowPrice)}</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-label">24h Volume:</span>
+                  <span className="stat-value">{formatVolume(priceData.volume)} DOGE</span>
+                </div>
+              </div>
+            )}
+            <div className="header-status">
+              <span className="live-indicator">🟢 Live</span>
+              <span className="last-update">
+                {lastUpdated && `Updated ${lastUpdated.toLocaleTimeString()}`}
+              </span>
+            </div>
           </div>
-          <div className="header-status">
-            <span className="live-indicator">🟢 Live</span>
-            <span className="last-update">
-              {lastUpdated && `Updated ${lastUpdated.toLocaleTimeString()}`}
-            </span>
-          </div>
-        </div>
-      </header>
-
-      <main className="dashboard-main">
+        </header>      <main className="dashboard-main">
         <div className="dashboard-grid">
           {/* Portfolio Overview Card */}
           <div className="dashboard-card portfolio-card">
@@ -113,63 +141,6 @@ function App() {
                 </span>
               </div>
             </div>
-          </div>
-
-          {/* Live Price Card */}
-          <div className="dashboard-card price-card">
-            <div className="card-header">
-              <h3>DOGE/USDT</h3>
-              <span className="card-icon">🐕</span>
-            </div>
-            {loading && !priceData ? (
-              <div className="loading">
-                <div className="spinner"></div>
-                <p>Loading price...</p>
-              </div>
-            ) : error ? (
-              <div className="error">
-                <span className="error-icon">⚠️</span>
-                <p>{error}</p>
-              </div>
-            ) : priceData ? (
-              <div className="price-content">
-                <div className="current-price">
-                  {formatPrice(priceData.price)}
-                </div>
-                <div className={`price-change ${priceData.priceChangePercent >= 0 ? 'positive' : 'negative'}`}>
-                  {formatPercent(priceData.priceChangePercent)}
-                </div>
-              </div>
-            ) : null}
-          </div>
-
-          {/* Market Stats Card */}
-          <div className="dashboard-card stats-card">
-            <div className="card-header">
-              <h3>Market Stats</h3>
-              <span className="card-icon">📈</span>
-            </div>
-            {priceData ? (
-              <div className="stats-grid">
-                <div className="stat-item">
-                  <span className="stat-label">24h High</span>
-                  <span className="stat-value">{formatPrice(priceData.highPrice)}</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-label">24h Low</span>
-                  <span className="stat-value">{formatPrice(priceData.lowPrice)}</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-label">24h Volume</span>
-                  <span className="stat-value">{formatVolume(priceData.volume)} DOGE</span>
-                </div>
-              </div>
-            ) : (
-              <div className="loading">
-                <div className="spinner"></div>
-                <p>Loading stats...</p>
-              </div>
-            )}
           </div>
 
           {/* Holdings Card */}
