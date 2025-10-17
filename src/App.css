@@ -198,6 +198,7 @@ body {
   padding: var(--spacing-lg);
   background: rgba(102, 126, 234, 0.05);
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  position: relative;
 }
 
 .card-header h3 {
@@ -205,6 +206,8 @@ body {
   font-weight: 600;
   color: var(--text-primary);
   margin: 0;
+  flex: 1;
+  text-align: center;
 }
 
 .card-icon {
@@ -212,9 +215,63 @@ body {
   opacity: 0.8;
 }
 
+.nav-arrow {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.nav-arrow:hover {
+  background: rgba(255, 107, 53, 0.1);
+  transform: scale(1.1);
+}
+
+.nav-arrow:active {
+  transform: scale(0.95);
+}
+
+.nav-arrow:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.3);
+}
+
 /* Portfolio Card */
-.portfolio-card .portfolio-summary {
+.portfolio-card .portfolio-content {
   padding: var(--spacing-lg);
+}
+
+.portfolio-card .portfolio-summary {
+  margin-bottom: var(--spacing-xl);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.portfolio-card .holdings-section h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-md);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.portfolio-card .holdings-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
 }
 
 .total-value,
@@ -318,11 +375,8 @@ body {
 }
 
 .holding-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: var(--spacing-md);
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
   background: rgba(102, 126, 234, 0.03);
   border-radius: 12px;
   transition: background-color 0.2s ease;
@@ -336,45 +390,45 @@ body {
   margin-bottom: 0;
 }
 
-.holding-info {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
+.holding-header {
+  margin-bottom: var(--spacing-sm);
 }
 
 .holding-symbol {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.1rem;
+  font-weight: 700;
   color: var(--text-primary);
 }
 
-.holding-amount {
+.holding-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detail-label {
   font-size: 0.8rem;
   color: var(--text-secondary);
-}
-
-.holding-value {
-  text-align: right;
-}
-
-.holding-value .value {
-  display: block;
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: var(--spacing-xs);
-}
-
-.holding-value .change {
-  font-size: 0.8rem;
   font-weight: 500;
 }
 
-.holding-value .change.positive {
+.detail-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.detail-value.positive {
   color: var(--success-color);
 }
 
-.holding-value .change.negative {
+.detail-value.negative {
   color: var(--danger-color);
 }
 

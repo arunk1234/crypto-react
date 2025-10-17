@@ -6,6 +6,7 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [lastUpdated, setLastUpdated] = useState(null)
+  const [currentPortfolio, setCurrentPortfolio] = useState('harshi')
 
   const fetchDogeData = async () => {
     try {
@@ -65,15 +66,46 @@ function App() {
     }).format(volume)
   }
 
-  // Sample portfolio data (you can replace this with real data later)
-  const portfolioData = {
-    totalValue: 1250.75,
-    totalChange: 45.30,
-    totalChangePercent: 3.76,
-    holdings: [
-      { symbol: 'DOGE', amount: 50000, value: 1250.75, change: 45.30 }
-    ]
+  // Sample portfolio data for two users (you can replace this with real data later)
+  const portfolios = {
+    harshi: {
+      name: 'Harshi',
+      totalValue: 1875.00,
+      totalChange: 67.50,
+      totalChangePercent: 3.74,
+      holdings: [
+        {
+          symbol: 'DOGE',
+          quantity: 75000,
+          buyPrice: 0.0225,
+          investedAmount: 1687.50,
+          currentValue: 1875.00,
+          profitLoss: 187.50,
+          profitLossPercent: 11.11
+        }
+      ]
+    },
+    arun: {
+      name: 'Arun',
+      totalValue: 1125.00,
+      totalChange: -45.00,
+      totalChangePercent: -3.84,
+      holdings: [
+        {
+          symbol: 'DOGE',
+          quantity: 45000,
+          buyPrice: 0.0275,
+          investedAmount: 1237.50,
+          currentValue: 1125.00,
+          profitLoss: -112.50,
+          profitLossPercent: -9.09
+        }
+      ]
+    }
   }
+
+  // For now, let's use the selected portfolio
+  const portfolioData = portfolios[currentPortfolio]
 
   return (
     <div className="dashboard">
@@ -122,71 +154,76 @@ function App() {
           </div>
         </header>      <main className="dashboard-main">
         <div className="dashboard-grid">
-          {/* Portfolio Overview Card */}
+          {/* Portfolio Card with Navigation */}
           <div className="dashboard-card portfolio-card">
             <div className="card-header">
-              <h3>Portfolio Overview</h3>
-              <span className="card-icon">📊</span>
+              <button
+                className="nav-arrow nav-arrow-left"
+                onClick={() => setCurrentPortfolio(currentPortfolio === 'harshi' ? 'arun' : 'harshi')}
+                aria-label="Previous portfolio"
+              >
+                ‹
+              </button>
+              <h3>{portfolioData.name}'s Portfolio</h3>
+              <button
+                className="nav-arrow nav-arrow-right"
+                onClick={() => setCurrentPortfolio(currentPortfolio === 'harshi' ? 'arun' : 'harshi')}
+                aria-label="Next portfolio"
+              >
+                ›
+              </button>
             </div>
-            <div className="portfolio-summary">
-              <div className="total-value">
-                <span className="label">Total Value</span>
-                <span className="value">${portfolioData.totalValue.toFixed(2)}</span>
-              </div>
-              <div className={`total-change ${portfolioData.totalChange >= 0 ? 'positive' : 'negative'}`}>
-                <span className="label">24h Change</span>
-                <span className="value">
-                  {portfolioData.totalChange >= 0 ? '+' : ''}${portfolioData.totalChange.toFixed(2)}
-                  ({formatPercent(portfolioData.totalChangePercent)})
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Holdings Card */}
-          <div className="dashboard-card holdings-card">
-            <div className="card-header">
-              <h3>My Holdings</h3>
-              <span className="card-icon">💰</span>
-            </div>
-            <div className="holdings-list">
-              {portfolioData.holdings.map((holding, index) => (
-                <div key={index} className="holding-item">
-                  <div className="holding-info">
-                    <span className="holding-symbol">{holding.symbol}</span>
-                    <span className="holding-amount">{holding.amount.toLocaleString()} coins</span>
-                  </div>
-                  <div className="holding-value">
-                    <span className="value">${holding.value.toFixed(2)}</span>
-                    <span className={`change ${holding.change >= 0 ? 'positive' : 'negative'}`}>
-                      {holding.change >= 0 ? '+' : ''}${holding.change.toFixed(2)}
-                    </span>
-                  </div>
+            <div className="portfolio-content">
+              <div className="portfolio-summary">
+                <div className="total-value">
+                  <span className="label">Total Value</span>
+                  <span className="value">${portfolioData.totalValue.toFixed(2)}</span>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Placeholder Cards for Future Features */}
-          <div className="dashboard-card placeholder-card">
-            <div className="card-header">
-              <h3>Price Alerts</h3>
-              <span className="card-icon">🔔</span>
-            </div>
-            <div className="placeholder-content">
-              <p>Coming Soon</p>
-              <small>Set price alerts for your favorite coins</small>
-            </div>
-          </div>
-
-          <div className="dashboard-card placeholder-card">
-            <div className="card-header">
-              <h3>Market News</h3>
-              <span className="card-icon">📰</span>
-            </div>
-            <div className="placeholder-content">
-              <p>Coming Soon</p>
-              <small>Latest crypto news and updates</small>
+                <div className={`total-change ${portfolioData.totalChange >= 0 ? 'positive' : 'negative'}`}>
+                  <span className="label">24h Change</span>
+                  <span className="value">
+                    {portfolioData.totalChange >= 0 ? '+' : ''}${portfolioData.totalChange.toFixed(2)}
+                    ({formatPercent(portfolioData.totalChangePercent)})
+                  </span>
+                </div>
+              </div>
+              <div className="holdings-section">
+                <h4>Holdings</h4>
+                <div className="holdings-list">
+                  {portfolioData.holdings.map((holding, index) => (
+                    <div key={index} className="holding-item">
+                      <div className="holding-header">
+                        <span className="holding-symbol">{holding.symbol}</span>
+                      </div>
+                      <div className="holding-details">
+                        <div className="detail-row">
+                          <span className="detail-label">Quantity:</span>
+                          <span className="detail-value">{holding.quantity.toLocaleString()} coins</span>
+                        </div>
+                        <div className="detail-row">
+                          <span className="detail-label">Buy Price:</span>
+                          <span className="detail-value">${holding.buyPrice.toFixed(6)}</span>
+                        </div>
+                        <div className="detail-row">
+                          <span className="detail-label">Invested:</span>
+                          <span className="detail-value">${holding.investedAmount.toFixed(2)}</span>
+                        </div>
+                        <div className="detail-row">
+                          <span className="detail-label">Current Value:</span>
+                          <span className="detail-value">${holding.currentValue.toFixed(2)}</span>
+                        </div>
+                        <div className="detail-row">
+                          <span className="detail-label">P/L:</span>
+                          <span className={`detail-value ${holding.profitLoss >= 0 ? 'positive' : 'negative'}`}>
+                            {holding.profitLoss >= 0 ? '+' : ''}${holding.profitLoss.toFixed(2)}
+                            ({holding.profitLossPercent >= 0 ? '+' : ''}{holding.profitLossPercent.toFixed(2)}%)
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
