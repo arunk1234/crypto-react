@@ -82,9 +82,6 @@ function NewsPage() {
   if (loading) {
     return (
       <div className="news-page">
-        <div className="news-header">
-          <h1>🐕 Dogecoin News</h1>
-        </div>
         <div className="loading-container">
           <div className="spinner"></div>
           <p>Loading news...</p>
@@ -96,9 +93,6 @@ function NewsPage() {
   if (error) {
     return (
       <div className="news-page">
-        <div className="news-header">
-          <h1>🐕 Dogecoin News</h1>
-        </div>
         <div className="error-container">
           <p>{error}</p>
           <button onClick={fetchNews} className="retry-button">Retry</button>
@@ -109,10 +103,6 @@ function NewsPage() {
 
   return (
     <div className="news-page">
-      <div className="news-header">
-        <h1>🐕 Dogecoin News</h1>
-      </div>
-
       <div className="news-grid">
         {news.map((item) => (
           <a
